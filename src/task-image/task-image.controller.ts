@@ -19,11 +19,8 @@ export class TaskImageController {
 
   @Get('findImage/:user_id')
   async findNextImage(@Param('user_id') user_id: string){
-
     return await this.taskImageService.findNextImage(user_id);
   }
-
-
 
   @Put('update/:_id')
   async update(@Param('_id') _id: string, @Body() updateTaskImageDto: UpdateTaskImageDto) {
