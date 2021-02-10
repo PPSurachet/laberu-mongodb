@@ -8,7 +8,8 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     MongooseModule.forRoot("mongodb+srv://Surachet:0939342490@cluster0.ivm7n.mongodb.net/laberu"), 
-    TaskImageModule, UserModule
+    TaskImageModule, UserModule , TaskSuccessModule
+
   ],
   controllers: [AppController],
   providers: [AppService],
