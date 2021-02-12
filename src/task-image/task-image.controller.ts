@@ -5,7 +5,7 @@ import { UpdateTaskImageDto } from './dto/update-task-image.dto';
 
 @Controller('task-image')
 export class TaskImageController {
-  constructor(private readonly taskImageService: TaskImageService) {}
+  constructor(private readonly taskImageService: TaskImageService) { }
 
   @Post('/create')
   async create(@Body() createTaskImageDto: CreateTaskImageDto) {
@@ -17,14 +17,24 @@ export class TaskImageController {
     return await this.taskImageService.findAll();
   }
 
+  @Get('getCountTaskSuccess')
+  async getCountTaskSuccess() {
+    return await this.taskImageService.getCountTaskSuccess();
+  }
+
   @Get('findImage/:user_id')
-  async findNextImage(@Param('user_id') user_id: string){
+  async findNextImage(@Param('user_id') user_id: string) {
     return await this.taskImageService.findNextImage(user_id);
   }
 
-  @Put('update/:_id')
-  async update(@Param('_id') _id: string, @Body() updateTaskImageDto: UpdateTaskImageDto) {
-    return await this.taskImageService.update(_id, updateTaskImageDto);
+  @Put('update_status/:_id')
+  async updateStatus(@Param('_id') _id: string, @Body() updateTaskImageDto: UpdateTaskImageDto) {
+    return await this.taskImageService.updateStatus(_id, updateTaskImageDto);
+  }
+
+  @Put('update_status_all')
+  async updateStatusAll(@Body() updateTaskImageDto: UpdateTaskImageDto) {
+    return await this.taskImageService.updateStatusAll(updateTaskImageDto);
   }
 
   @Delete('delete/:_id')

@@ -20,7 +20,11 @@ export class TaskImageService {
     return await this.taskImageModel.find().exec();
   }
 
-  async findNextImage(user_id:String) {
+  async getCountTaskSuccess() {
+    return await this.taskImageModel.count({ process: true }).exec();
+  }
+
+  async findNextImage(user_id: String) {
     return await this.taskImageModel.aggregate([
       { $match: { status: false, process: false } },
       {
@@ -36,12 +40,16 @@ export class TaskImageService {
     ]).exec();
   }
 
-  async update(_id: String, updateTaskImageDto: UpdateTaskImageDto) {
+  async updateStatus(_id: String, updateTaskImageDto: UpdateTaskImageDto) {
     await this.taskImageModel.updateOne(
       { _id: _id },
       { status: updateTaskImageDto.status },
       { upsert: false }
     ).exec()
+  }
+
+  async updateStatusAll(updateTaskImageDto: UpdateTaskImageDto) {
+    await this.taskImageModel.updateMany({ status: updateTaskImageDto.status }).exec()
   }
 
   async remove(_id: String) {

@@ -8,7 +8,7 @@ import { User, UserDocument } from './entities/user.entity';
 @Injectable()
 export class UserService {
 
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>){}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
   async create(createUserDto: CreateUserDto) {
     const createdUser = new this.userModel(createUserDto)
@@ -19,15 +19,11 @@ export class UserService {
     return await this.userModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async checkUserLogin(email: String, password: String) {
+    return await this.userModel.find({ email: email, phone_number: password }).exec();
   }
 
   async remove(_id: String) {
-    return await this.userModel.remove({ _id : _id}).exec();
+    return await this.userModel.remove({ _id: _id }).exec();
   }
 }
