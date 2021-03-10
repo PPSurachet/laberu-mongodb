@@ -6,6 +6,7 @@ import { TaskImageModule } from './task-image/task-image.module';
 import { TaskSuccessModule } from './task-success/task-success.module';
 import { UserModule } from './user/user.module';
 import { ImageDataModule } from './image-data/image-data.module';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { ImageDataModule } from './image-data/image-data.module';
     TaskImageModule,
     UserModule,
     TaskSuccessModule,
-    ImageDataModule
+    ImageDataModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

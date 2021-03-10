@@ -17,9 +17,19 @@ export class TaskSuccessController {
     return await this.taskSuccessService.findAll();
   }
 
-  @Put('update/:_id')
-  async updateCaption(@Param('_id') _id: string, @Body() updateTaskSuccessDto: UpdateTaskSuccessDto) {
-    return await this.taskSuccessService.updateCaption(_id, updateTaskSuccessDto);
+  @Get('findByShortcode/:shortcode')
+  async findByShortcode(@Param('shortcode') shortcode: String) {
+    return await this.taskSuccessService.findByShortcode(shortcode);
+  }
+
+  @Get('findCountByShortcode/:shortcode')
+  async findCountByShortcode(@Param('shortcode') shortcode: String) {
+    return await this.taskSuccessService.findCountByShortcode(shortcode);
+  }
+
+  @Get('findByUser/:user_id')
+  async findByUser(@Param('user_id') user_id: String) {
+    return await this.taskSuccessService.findByUser(user_id);
   }
 
   @Delete('delete/:_id')

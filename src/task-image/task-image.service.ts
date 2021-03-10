@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { CreateTaskImageDto } from './dto/create-task-image.dto';
 import { UpdateTaskImageDto } from './dto/update-task-image.dto';
 import { TaskImage, TaskImageDocument } from './entities/task-image.entity';
-import { TaskImageModule } from './task-image.module';
 
 @Injectable()
 export class TaskImageService {
@@ -43,13 +42,56 @@ export class TaskImageService {
   async updateStatus(_id: String, updateTaskImageDto: UpdateTaskImageDto) {
     await this.taskImageModel.updateOne(
       { _id: _id },
-      { status: updateTaskImageDto.status },
+      { 
+        time_start: updateTaskImageDto.time_start,
+        status: updateTaskImageDto.status,
+      },
+      { upsert: false }
+    ).exec()
+  }
+
+  async updateProcess(_id: String, updateTaskImageDto: UpdateTaskImageDto) {
+    await this.taskImageModel.updateOne(
+      { _id: _id },
+      {
+        time_start: updateTaskImageDto.time_start,
+        status: updateTaskImageDto.status,
+        process: updateTaskImageDto.process,
+      },
       { upsert: false }
     ).exec()
   }
 
   async updateStatusAll(updateTaskImageDto: UpdateTaskImageDto) {
-    await this.taskImageModel.updateMany({ status: updateTaskImageDto.status }).exec()
+    await this.taskImageModel.updateMany(
+      {
+        time_start:updateTaskImageDto.time_start,
+        status: updateTaskImageDto.status,
+        process: updateTaskImageDto.process
+      }
+    ).exec()
+  }
+
+  async resetStatusTask(updateTaskImageDto: UpdateTaskImageDto){
+    (await this.taskImageModel.find({ status : true , process : false })).forEach(doc => {
+
+      const millis = Date.now() - Number(doc.time_start);
+      const second = Math.floor(millis / 1000);
+
+      if(second >= 60){
+
+      this.taskImageModel.updateOne(
+          {_id: doc._id},
+          {
+            status:updateTaskImageDto.status,
+            process:updateTaskImageDto.process,
+            time_start:updateTaskImageDto.time_start,
+          },
+          { upsert: false },
+        ).exec();
+
+      }
+    })
   }
 
   async remove(_id: String) {

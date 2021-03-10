@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { count } from 'console';
 import { Model } from 'mongoose';
 import { CreateTaskSuccessDto } from './dto/create-task-success.dto';
 import { UpdateTaskSuccessDto } from './dto/update-task-success.dto';
@@ -19,14 +20,16 @@ export class TaskSuccessService {
     return await this.taskSuccessModel.find().exec();
   }
 
-  async updateCaption(_id: String, updateTaskSuccessDto: UpdateTaskSuccessDto) {
-    await this.taskSuccessModel.updateOne(
-      { _id: _id },
-      {
-        caption: updateTaskSuccessDto.caption,
-      },
-      { upsert: false }
-    ).exec();
+  async findByShortcode(shortcode: String) {
+    return await this.taskSuccessModel.find({ shortcode: shortcode }).exec();
+  }
+
+  async findCountByShortcode(shortcode: String) {
+    return await this.taskSuccessModel.count({ shortcode: shortcode }).exec();
+  }
+
+  async findByUser(user_id: String) {
+    return await this.taskSuccessModel.find({ user_id: user_id }).exec();
   }
 
   async remove(_id: String) {
