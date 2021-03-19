@@ -1,8 +1,9 @@
 export class CreateTaskSuccessDto {
-    shortcode: String;
-    caption: String;
-    time_start: String;
-    time_stop: String;
-    user_id: String;
-    task_id: String;
+  shortcode: String;
+  description: String;
+  time_start: String;
+  time_stop: String;
+  accept: Boolean;
+  user_id: String;
+  task_id: String;
 }

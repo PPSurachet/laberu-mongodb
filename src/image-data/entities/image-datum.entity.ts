@@ -9,6 +9,9 @@ export type ImageDataDocument = ImageDatum & Document;
 export class ImageDatum {
     @Prop({ required: true })
     shortcode: String;
+
+    @Prop({ required: true })
+    description_english: String;
 }
 
 

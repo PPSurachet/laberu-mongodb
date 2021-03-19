@@ -26,4 +26,8 @@ export class ImageDataService {
   async getCountImageData() {
     return await this.imageDataModel.count({}).exec();
   }
+
+  async removeAll(){
+    return await this.imageDataModel.deleteMany().exec();
+  }
 }

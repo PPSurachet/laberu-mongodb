@@ -17,9 +17,9 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get('/check_login/:email/:password')
-  async checkUserLogin(@Param('email') email: String, @Param('password') password: String) {
-    return await this.userService.checkUserLogin(email, password)
+  @Get('/check_login/:uid')
+  async checkUserLogin(@Param('uid') uid: String) {
+    return await this.userService.checkUserLogin(uid)
   }
 
   @Delete('delete/:_id')

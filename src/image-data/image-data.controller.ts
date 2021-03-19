@@ -26,4 +26,9 @@ export class ImageDataController {
   async findByShortcode(@Param('shortcode') shortcode: String) {
     return await this.imageDataService.findByShortcode(shortcode);
   }
+
+  @Delete('deleteAll')
+  async removeAll(){
+    return await this.imageDataService.removeAll();
+  }
 }

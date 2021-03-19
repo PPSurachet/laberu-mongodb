@@ -52,4 +52,9 @@ export class TaskImageController {
   async remove(@Param('_id') _id: string) {
     return await this.taskImageService.remove(_id);
   }
+
+  @Delete('deleteAll')
+  async removeAll(){
+    return await this.taskImageService.removeAll();
+  }
 }

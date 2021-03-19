@@ -42,7 +42,7 @@ export class TaskImageService {
   async updateStatus(_id: String, updateTaskImageDto: UpdateTaskImageDto) {
     await this.taskImageModel.updateOne(
       { _id: _id },
-      { 
+      {
         time_start: updateTaskImageDto.time_start,
         status: updateTaskImageDto.status,
       },
@@ -65,27 +65,27 @@ export class TaskImageService {
   async updateStatusAll(updateTaskImageDto: UpdateTaskImageDto) {
     await this.taskImageModel.updateMany(
       {
-        time_start:updateTaskImageDto.time_start,
+        time_start: updateTaskImageDto.time_start,
         status: updateTaskImageDto.status,
         process: updateTaskImageDto.process
       }
     ).exec()
   }
 
-  async resetStatusTask(updateTaskImageDto: UpdateTaskImageDto){
-    (await this.taskImageModel.find({ status : true , process : false })).forEach(doc => {
+  async resetStatusTask(updateTaskImageDto: UpdateTaskImageDto) {
+    (await this.taskImageModel.find({ status: true, process: false })).forEach(doc => {
 
       const millis = Date.now() - Number(doc.time_start);
       const second = Math.floor(millis / 1000);
 
-      if(second >= 60){
+      if (second >= 1200) {
 
-      this.taskImageModel.updateOne(
-          {_id: doc._id},
+        this.taskImageModel.updateOne(
+          { _id: doc._id },
           {
-            status:updateTaskImageDto.status,
-            process:updateTaskImageDto.process,
-            time_start:updateTaskImageDto.time_start,
+            status: updateTaskImageDto.status,
+            process: updateTaskImageDto.process,
+            time_start: updateTaskImageDto.time_start,
           },
           { upsert: false },
         ).exec();
@@ -96,5 +96,9 @@ export class TaskImageService {
 
   async remove(_id: String) {
     return await this.taskImageModel.remove({ _id: _id }).exec();
+  }
+
+  async removeAll() {
+    return await this.taskImageModel.deleteMany().exec();
   }
 }
