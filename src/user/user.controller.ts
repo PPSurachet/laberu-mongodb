@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post('/create')
   async create(@Body() createUserDto: CreateUserDto) {
@@ -17,14 +17,9 @@ export class UserController {
     return await this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Get('/check_login/:uid')
+  async checkUserLogin(@Param('uid') uid: String) {
+    return await this.userService.checkUserLogin(uid)
   }
 
   @Delete('delete/:_id')

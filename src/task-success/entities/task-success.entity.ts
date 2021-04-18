@@ -9,13 +9,16 @@ export class TaskSuccess {
     shortcode: String;
 
     @Prop()
-    caption: String;
+    description: String;
 
     @Prop()
     time_start: String;
 
     @Prop()
     time_stop: String;
+
+    @Prop()
+    accept: Boolean;
 
     @Prop({ required: true })
     user_id: String;
