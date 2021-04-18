@@ -19,7 +19,7 @@ export class ProjectController {
   }
 
   @Put('/update/:_id')
-  async updateProject(@Param('_id') _id: String, updateProjectDto: UpdateProjectDto) {
+  async updateProject(@Param('_id') _id: String, @Body() updateProjectDto: UpdateProjectDto) {
     return await this.projectService.updateProject(_id, updateProjectDto);
   }
 }

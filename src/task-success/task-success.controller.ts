@@ -13,7 +13,7 @@ import { UpdateTaskSuccessDto } from './dto/update-task-success.dto';
 
 @Controller('task-success')
 export class TaskSuccessController {
-  constructor(private readonly taskSuccessService: TaskSuccessService) {}
+  constructor(private readonly taskSuccessService: TaskSuccessService) { }
 
   @Post('/create')
   async create(@Body() createTaskSuccessDto: CreateTaskSuccessDto) {
@@ -41,6 +41,16 @@ export class TaskSuccessController {
     @Param('accept') accept: Boolean,
   ) {
     return await this.taskSuccessService.findCountTaskByUser(user_id, accept);
+  }
+
+  @Get('findImageByUser/:user_id')
+  async findImageByUser(@Param('user_id') user_id: String) {
+    return await this.taskSuccessService.findImageByUser(user_id);
+  }
+
+  @Get('randomImageByUser/:user_id')
+  async randomImageByUser(@Param('user_id') user_id: String) {
+    return await this.taskSuccessService.randomImageByUser(user_id);
   }
 
   @Delete('delete/:_id')

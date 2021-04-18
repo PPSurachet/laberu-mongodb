@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { CreateTaskImageDto } from './dto/create-task-image.dto';
 import { UpdateTaskImageDto } from './dto/update-task-image.dto';
 import { TaskImage, TaskImageDocument } from './entities/task-image.entity';
@@ -36,6 +37,69 @@ export class TaskImageService {
       },
       { $match: { "TaskSuccess.user_id": { $ne: user_id } } },
       { $limit: 1 }
+    ]).exec();
+  }
+
+  async fineTaskSuccessWithId(_id: String) {
+    return await this.taskImageModel.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(`${_id}`) } },
+      {
+        $lookup: {
+          from: "task_success",
+          localField: "shortcode",
+          foreignField: "shortcode",
+          as: "TaskSuccess"
+        }
+      },
+    ]).exec();
+  }
+
+  async findTaskSuccessInAnImages() {
+    return await this.taskImageModel.aggregate([
+      {
+        $lookup: {
+          from: "task_success",
+          localField: "shortcode",
+          foreignField: "shortcode",
+          as: "result"
+        }
+      },
+      {
+        $project: {
+          "shortcode": 1,
+          "result.description": 1,
+        }
+      },
+      {
+        $match: {
+          $expr: { $gt: [{ $size: "$result" }, 0] }
+        }
+      }
+    ]).exec();
+  }
+
+  async randomTaskSuccessInAnImages() {
+    return await this.taskImageModel.aggregate([
+      {
+        $lookup: {
+          from: "task_success",
+          localField: "shortcode",
+          foreignField: "shortcode",
+          as: "result"
+        }
+      },
+      {
+        $project: {
+          "shortcode": 1,
+          "result.description": 1,
+        }
+      },
+      {
+        $match: {
+          $expr: { $gt: [{ $size: "$result" }, 0] }
+        }
+      },
+      { $sample: { size: 1 } }
     ]).exec();
   }
 
@@ -78,7 +142,7 @@ export class TaskImageService {
       const millis = Date.now() - Number(doc.time_start);
       const second = Math.floor(millis / 1000);
 
-      if (second >= 1200) {
+      if (second >= 3600) {
 
         this.taskImageModel.updateOne(
           { _id: doc._id },

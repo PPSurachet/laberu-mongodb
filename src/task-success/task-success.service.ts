@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { count } from 'console';
 import { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { CreateTaskSuccessDto } from './dto/create-task-success.dto';
 import { UpdateTaskSuccessDto } from './dto/update-task-success.dto';
 import {
@@ -14,7 +15,7 @@ export class TaskSuccessService {
   constructor(
     @InjectModel(TaskSuccess.name)
     private taskSuccessModel: Model<TaskSuccessDocument>,
-  ) {}
+  ) { }
 
   async create(createTaskSuccessDto: CreateTaskSuccessDto) {
     const createdTaskSuccess = new this.taskSuccessModel(createTaskSuccessDto);
@@ -38,6 +39,17 @@ export class TaskSuccessService {
       .find({ user_id: user_id, accept: accept })
       .count()
       .exec();
+  }
+
+  async findImageByUser(user_id: String) {
+    return await this.taskSuccessModel.find({ user_id: user_id }).exec();
+  }
+
+  async randomImageByUser(user_id: String) {
+    return await this.taskSuccessModel.aggregate([
+      { $match: { user_id: user_id } },
+      { $sample: { size: 1 } }
+    ])
   }
 
   async remove(_id: String) {

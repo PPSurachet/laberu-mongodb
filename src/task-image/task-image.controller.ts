@@ -28,6 +28,21 @@ export class TaskImageController {
     return await this.taskImageService.findNextImage(user_id);
   }
 
+  @Get('fineTaskSuccessWithId/:task_id')
+  async fineTaskSuccessWithId(@Param('task_id') task_id: string) {
+    return await this.taskImageService.fineTaskSuccessWithId(task_id)
+  }
+
+  @Get('findTaskSuccessInAllImages')
+  async findTaskSuccessInImages() {
+    return await this.taskImageService.findTaskSuccessInAnImages();
+  }
+
+  @Get('randomTaskSuccessInAnImages')
+  async randomTaskSuccessInAnImages() {
+    return await this.taskImageService.randomTaskSuccessInAnImages();
+  }
+
   @Put('update_status/:_id')
   async updateStatus(@Param('_id') _id: string, @Body() updateTaskImageDto: UpdateTaskImageDto) {
     return await this.taskImageService.updateStatus(_id, updateTaskImageDto);
@@ -44,7 +59,7 @@ export class TaskImageController {
   }
 
   @Put('reset_status_all')
-  async resetStatusTask(@Body() updateImageDatumDto: UpdateImageDatumDto){
+  async resetStatusTask(@Body() updateImageDatumDto: UpdateImageDatumDto) {
     return await this.taskImageService.resetStatusTask(updateImageDatumDto);
   }
 
@@ -54,7 +69,7 @@ export class TaskImageController {
   }
 
   @Delete('deleteAll')
-  async removeAll(){
+  async removeAll() {
     return await this.taskImageService.removeAll();
   }
 }
